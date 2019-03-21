@@ -21,7 +21,7 @@ if (command === 'concert-this') {
     concertThis()
 } else if (command === 'spotify-this-song') {
     console.log('your songs')
-    runSpotify()
+    // runSpotify()
 } else if (command === 'movie-this') {
     console.log('your movie')
     movieThis()
@@ -98,35 +98,20 @@ function movieThis() {
         });
 };
 
-let runSpotify = function () {
-    let songName = process.argv.slice(3).join("+");
-    spotify.search({ type: 'track', query: songName, limit: 1 }, function (err, data) {
-        if (err) {
-            fs.appendFileSync('log.txt', `Error occurred: ${err}`, 'utf8');
-            return console.log(`Error occurred: ${err}`);
-        }
+spotify.search({ type: 'track', limit: 1, query: 'All the Small Things' }, function (err, data) {
+    if (err) {
+        return console.log('Error occurred: ' + err);
+    }
 
-        for (let i = 0; i < data.tracks.items.length; i++) {
-            console.log(`
-            Song Title: ${data.tracks.items[i].name}`);
-            fs.appendFileSync('log.txt', `
-            Song Title: ${data.tracks.items[i].name}`, 'utf8');
+    // console.log(data)
+    // console.log(data.tracks.items[0]);
+    console.log(data.tracks.items[0].album.artists[0].name);
+    console.log(data.tracks.items[0].name);
+    console.log(data.tracks.items[0].album.name);
+    console.log(data.tracks.items[0].album.external_urls.spotify);
+    //console.log(data.tracks.items[0].album.artists);
 
-            console.log(`
-            Album Title: ${data.tracks.items[i].album.name}`);
-            fs.appendFileSync('log.txt', `
-            Album Title: ${data.tracks.items[i].album.name}`, 'utf8');
+    //artist name
+    
 
-            console.log(`
-            Artist(s) Name: ${data.tracks.items[i].artists[0].name}`);
-            fs.appendFileSync('log.txt', `
-            Artist(s) Name: ${data.tracks.items[i].artists[0].name}`, 'utf8');
-
-            console.log(`
-            Preview URL: ${data.tracks.items[i].preview_url}`);
-            fs.appendFileSync('log.txt', `
-            Preview URL: ${data.tracks.items[i].preview_url}
-            /n`, 'utf8');
-        }
-    });
-};
+});
